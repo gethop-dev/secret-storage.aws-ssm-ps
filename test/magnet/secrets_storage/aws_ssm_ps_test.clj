@@ -3,7 +3,8 @@
 ;; file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 (ns  magnet.secrets-storage.aws-ssm-ps-test
-  (:require [clojure.test :refer :all]
+  (:require [clojure.spec.test.alpha :as stest]
+            [clojure.test :refer :all]
             [magnet.secrets-storage.core :as core]
             [magnet.secrets-storage.util :refer [encode-base64]]
             [magnet.secrets-storage.aws-ssm-ps]
@@ -11,6 +12,12 @@
   (:import [magnet.secrets_storage.aws_ssm_ps AWSParameterStore]
            [com.amazonaws.services.simplesystemsmanagement.model ParameterNotFoundException]
            [java.util UUID]))
+
+(defn enable-instrumentation [f]
+  (-> (stest/enumerate-namespace 'magnet.secrets-storage.aws-ssm-ps) stest/instrument)
+  (f))
+
+(use-fixtures :once enable-instrumentation)
 
 (def config {:aws-kms-key (System/getenv "SSM_SP_AWS_KMS_KEY")
              :user-keys-path (System/getenv "SSM_SP_USER_KEYS_PATH")})

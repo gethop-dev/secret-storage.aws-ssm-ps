@@ -3,8 +3,7 @@
 ;; file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 (ns magnet.secrets-storage.util
-  (:require [clojure.spec.alpha :as s]
-            [clojure.spec.test.alpha :as stest])
+  (:require [clojure.spec.alpha :as s])
   (:import [java.util Base64]))
 
 (defn base64?
@@ -30,5 +29,3 @@
 (s/fdef decode-base64
   :args (s/cat :src base64?)
   :ret bytes?)
-
-(stest/instrument [`encode-base64 `decode-base64])
