@@ -7,7 +7,6 @@
             [clojure.test :refer :all]
             [magnet.secrets-storage.util :as util]))
 
-
 (defn enable-instrumentation [f]
   (-> (stest/enumerate-namespace 'magnet.secrets-storage.util) stest/instrument)
   (f))
