@@ -18,8 +18,7 @@
   [config user-id]
   (format (:user-keys-path config) user-id))
 
-(s/def ::user-id (s/or :string string? :uuid uuid?))
-(s/def ::get-user-key-path-args (s/cat :config ::AWSConfig :user-id ::user-id))
+(s/def ::get-user-key-path-args (s/cat :config ::AWSConfig :user-id ::core/user-id))
 (s/def ::get-user-key-path-ret string?)
 (s/fdef get-user-key-path
   :args ::get-user-key-path-args
@@ -35,11 +34,9 @@
    (get-in [:parameter :value])
    (core/deserialize)))
 
-(s/def ::get-crypt-key-args (s/cat :config ::AWSConfig :user-id ::user-id))
-(s/def ::get-crypt-key-ret ::core/crypt-key)
 (s/fdef get-crypt-key
-  :args ::get-crypt-key-args
-  :ret  ::get-crypt-key-ret)
+  :args ::core/get-key-args
+  :ret  ::core/get-key-ret)
 
 (defn- put-crypt-key
   "Put encryption key `crypt-key` for user `user-id` in Parameter Store."
@@ -52,22 +49,18 @@
     :key-id (:aws-kms-key config)
     :value (core/serialize crypt-key)}))
 
-(s/def ::put-crypt-key-args (s/cat :config ::AWSConfig :user-id ::user-id :crypt-key ::core/crypt-key))
-(s/def ::put-crypt-key-ret (s/map-of keyword? int?)) ; Returns a map like {:version nn}
 (s/fdef put-crypt-key
-  :args ::put-crypt-key-args
-  :ret  ::put-crypt-key-ret)
+  :args ::core/put-key-args
+  :ret  ::core/put-key-ret)
 
 (defn- delete-crypt-key
   "Delete encryption key for user `user-id` from Parameter Store."
   [config user-id]
   (ssm/delete-parameter {:name (get-user-key-path config user-id)}))
 
-(s/def ::delete-crypt-key-args (s/cat :config ::AWSConfig :user-id ::user-id))
-(s/def ::delete-crypt-key-ret boolean?)
 (s/fdef delete-crypt-key
-  :args ::delete-crypt-key-args
-  :ret  ::delete-crypt-key-ret)
+  :args ::core/delete-key-args
+  :ret  ::core/delete-key-ret)
 
 (defrecord AWSParameterStore [config]
   core/UserEncryptionKeyStore

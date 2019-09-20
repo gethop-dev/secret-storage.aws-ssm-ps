@@ -24,6 +24,20 @@
   :args #(s/cat :encryption-key ::serialized-crypt-key)
   :ret ::crypt-key)
 
+;; Specs used to validate arguments and return values for
+;; implementations of the protocol
+(s/def ::user-id (s/or :string string? :uuid uuid?))
+(s/def ::success boolean?)
+(s/def ::error-details map?)
+(s/def ::get-key-args (s/cat :config record? :user-id ::user-id))
+(s/def ::get-key-ret (s/keys :req-un [::success (or ::key ::error-details)]))
+(s/def ::put-key-args (s/cat :config record? :user-id ::user-id :key ::crypt-key))
+(s/def ::put-key-ret (s/keys :req-un [::success]
+                             :opt-un [::error-details]))
+(s/def ::delete-key-args (s/cat :config record? :user-id ::user-id))
+(s/def ::delete-key-ret (s/keys :req-un [::success]
+                                :opt-un [::error-details]))
+
 (defprotocol UserEncryptionKeyStore
   "Abstraction for managing encryption keys used for PII encryption/decryption"
   (get-key [this user-id] "Get encryption key of the user specified by user-id")
