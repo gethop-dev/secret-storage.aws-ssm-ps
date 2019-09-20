@@ -11,7 +11,7 @@
 
 (s/def ::aws-kms-key string?)
 (s/def ::user-keys-path string?)
-(s/def ::AWSConfig (s/keys :req [::aws-kms-key ::user-keys-path]))
+(s/def ::AWSConfig (s/keys :req-un [::aws-kms-key ::user-keys-path]))
 
 (defn- get-user-key-path
   "Build the path in Parameter Store for `user-id` user key"
