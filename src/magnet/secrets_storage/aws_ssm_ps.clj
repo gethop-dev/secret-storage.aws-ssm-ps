@@ -64,12 +64,12 @@
 
 (defrecord AWSParameterStore [config]
   core/UserEncryptionKeyStore
-  (get-key [{:keys [config]} user-id]
-    (get-crypt-key config user-id))
-  (put-key [{:keys [config]} user-id encryption-key]
-    (put-crypt-key config user-id encryption-key))
-  (delete-key [{:keys [config]} user-id]
-    (delete-crypt-key config user-id)))
+  (get-key [this user-id]
+    (get-crypt-key this user-id))
+  (put-key [this user-id encryption-key]
+    (put-crypt-key this user-id encryption-key))
+  (delete-key [this user-id]
+    (delete-crypt-key this user-id)))
 
 (defmethod ig/init-key :magnet.secrets-storage/aws-ssm-ps [_ config]
   (->AWSParameterStore config))
