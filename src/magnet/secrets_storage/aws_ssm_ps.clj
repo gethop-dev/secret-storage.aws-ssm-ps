@@ -28,15 +28,26 @@
 
 (defn- get-crypt-key
   "Get encryption key for user `user-id` from Parameter Store."
-  (->
-   (ssm/get-parameter
-    {:name (get-user-key-path config user-id)
-     :with-decryption true})
-   (get-in [:parameter :value])
-   (core/deserialize)))
   [{:keys [config]} user-id]
   {:pre [(and (s/valid? ::AWSConfig config)
               (s/valid? ::core/user-id user-id))]}
+  (try
+    (let [crypt-key (->
+                     (ssm/get-parameter
+                      {:name (get-user-key-path config user-id)
+                       :with-decryption true})
+                     (get-in [:parameter :value]))]
+      (if crypt-key
+        {:success true
+         :key (core/deserialize crypt-key)}
+        {:success false
+         :error-details {:error-code "CryptKeyNotFound"}}))
+    (catch com.amazonaws.AmazonServiceException e
+      {:success false
+       :error-details (ex->map e)})
+    (catch Exception e
+      {:success false
+       :error-details (.getMessage e)})))
 
 (s/fdef get-crypt-key
   :args ::core/get-key-args
@@ -44,16 +55,27 @@
 
 (defn- put-crypt-key
   "Put encryption key `crypt-key` for user `user-id` in Parameter Store."
-  (ssm/put-parameter
-   {:name (get-user-key-path config user-id)
-    :type "SecureString"
-    :overwrite true
-    :key-id (:aws-kms-key config)
-    :value (core/serialize crypt-key)}))
   [{:keys [config]} user-id crypt-key]
   {:pre [(and (s/valid? ::AWSConfig config)
               (s/valid? ::core/user-id user-id)
               (s/valid? ::core/crypt-key crypt-key))]}
+  (try
+    (let [result (ssm/put-parameter
+                  {:name (get-user-key-path config user-id)
+                   :type "SecureString"
+                   :overwrite true
+                   :key-id (:aws-kms-key config)
+                   :value (core/serialize crypt-key)})]
+      (if result
+        {:success true}
+        {:success false
+         :error-details {:error-code "UnknownError"}}))
+    (catch com.amazonaws.AmazonServiceException e
+      {:success false
+       :error-details (ex->map e)})
+    (catch Exception e
+      {:success false
+       :error-details (.getMessage e)})))
 
 (s/fdef put-crypt-key
   :args ::core/put-key-args
@@ -64,6 +86,18 @@
   [{:keys [config]} user-id]
   {:pre [(and (s/valid? ::AWSConfig config)
               (s/valid? ::core/user-id user-id))]}
+  (try
+    (let [result (ssm/delete-parameter {:name (get-user-key-path config user-id)})]
+      (if result
+        {:success true}
+        {:success false
+         :error-details {:error-code "UnknownError"}}))
+    (catch com.amazonaws.AmazonServiceException e
+      {:success false
+       :error-details (ex->map e)})
+    (catch Exception e
+      {:success false
+       :error-details (.getMessage e)})))
 
 (s/fdef delete-crypt-key
   :args ::core/delete-key-args

@@ -10,7 +10,6 @@
             [magnet.secrets-storage.aws-ssm-ps]
             [integrant.core :as ig])
   (:import [magnet.secrets_storage.aws_ssm_ps AWSParameterStore]
-           [com.amazonaws.services.simplesystemsmanagement.model ParameterNotFoundException]
            [java.util UUID]))
 
 (defn enable-instrumentation [f]
@@ -32,45 +31,36 @@
 
 (deftest ^:integration aws-ssm-ps-test
   (let [aws-ssm-ps-boundary (ig/init-key :magnet.secrets-storage/aws-ssm-ps config)]
-    (is
-     (core/get-key aws-ssm-ps-boundary enc-key-owner))
-    (is
-     (encode-base64 (core/get-key aws-ssm-ps-boundary enc-key-owner))
-     "It should be possible to encode key to base64 as it was mandatory format to even exist in AWS SSM PS")
-    (is
-     (thrown?
-      ParameterNotFoundException
-      (core/get-key aws-ssm-ps-boundary (str (UUID/randomUUID))))
-     "Getting key of a user that doesn't exist should fail.")
+    (let [result (core/get-key aws-ssm-ps-boundary enc-key-owner)]
+      (is
+       (:success result)
+       "It should be possible to get an existing key")
+      (is
+       (encode-base64 (:key result))
+       "It should be possible to encode key to base64 as it was mandatory format to even exist in AWS SSM PS"))
+    (let [result (core/get-key aws-ssm-ps-boundary (str (UUID/randomUUID)))]
+      (is
+       (and (= false (:success result))
+            (= "ParameterNotFound" (get-in result [:error-details :error-code])))
+       "Getting key of a user that doesn't exist should fail."))
     (let [new-user-id (str (UUID/randomUUID))
           secret-length 32
           secret-1 (byte-array (repeatedly secret-length #(rand-int 256)))
           secret-2 (byte-array (repeatedly secret-length #(rand-int 256)))]
       (is
-       (= (core/put-key aws-ssm-ps-boundary
-                        new-user-id
-                        secret-1)
-          {:version 1})
+       (= (core/put-key aws-ssm-ps-boundary new-user-id secret-1)
+          {:success true})
        "It should be possible to create a new user with new key.")
       (is
-       (= (core/put-key aws-ssm-ps-boundary
-                        new-user-id
-                        secret-2)
-          {:version 2})
-       "It should be possible to put new version of a key.")
+       (= (core/put-key aws-ssm-ps-boundary new-user-id secret-2)
+          {:success true})
+       "It should be possible to update (overwrite) a key.")
       (is
-       (= (core/delete-key aws-ssm-ps-boundary
-                           new-user-id)
-          {})
+       (= (core/delete-key aws-ssm-ps-boundary new-user-id)
+          {:success true})
        "It should be possible to delete a key.")
-      (is
-       (thrown? ParameterNotFoundException
-                (core/get-key aws-ssm-ps-boundary
-                              new-user-id))
-       "After a key gets deleted it should be impossible to get anything from that user.")
-      (is
-       (= (core/put-key aws-ssm-ps-boundary
-                        new-user-id
-                        secret-1)
-          {:version 1})
-       "If the key gets deleted, it should be possible to start all over again."))))
+      (let [result (core/get-key aws-ssm-ps-boundary new-user-id)]
+        (is
+         (and (= false (:success result))
+              (= "ParameterNotFound" (get-in result [:error-details :error-code])))
+         "After a key gets deleted it should be impossible to get anything from that user.")))))
