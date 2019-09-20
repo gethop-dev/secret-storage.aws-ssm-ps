@@ -16,6 +16,8 @@
 (defn- get-user-key-path
   "Build the path in Parameter Store for `user-id` user key"
   [config user-id]
+  {:pre [(and (s/valid? ::AWSConfig config)
+              (s/valid? ::core/user-id user-id))]}
   (format (:user-keys-path config) user-id))
 
 (s/def ::get-user-key-path-args (s/cat :config ::AWSConfig :user-id ::core/user-id))
@@ -26,13 +28,15 @@
 
 (defn- get-crypt-key
   "Get encryption key for user `user-id` from Parameter Store."
-  [config user-id]
   (->
    (ssm/get-parameter
     {:name (get-user-key-path config user-id)
      :with-decryption true})
    (get-in [:parameter :value])
    (core/deserialize)))
+  [{:keys [config]} user-id]
+  {:pre [(and (s/valid? ::AWSConfig config)
+              (s/valid? ::core/user-id user-id))]}
 
 (s/fdef get-crypt-key
   :args ::core/get-key-args
@@ -40,14 +44,16 @@
 
 (defn- put-crypt-key
   "Put encryption key `crypt-key` for user `user-id` in Parameter Store."
-  [config user-id crypt-key]
-  {:pre [(and (s/valid? ::user-id user-id) (s/valid? ::core/crypt-key crypt-key))]}
   (ssm/put-parameter
    {:name (get-user-key-path config user-id)
     :type "SecureString"
     :overwrite true
     :key-id (:aws-kms-key config)
     :value (core/serialize crypt-key)}))
+  [{:keys [config]} user-id crypt-key]
+  {:pre [(and (s/valid? ::AWSConfig config)
+              (s/valid? ::core/user-id user-id)
+              (s/valid? ::core/crypt-key crypt-key))]}
 
 (s/fdef put-crypt-key
   :args ::core/put-key-args
@@ -55,8 +61,9 @@
 
 (defn- delete-crypt-key
   "Delete encryption key for user `user-id` from Parameter Store."
-  [config user-id]
-  (ssm/delete-parameter {:name (get-user-key-path config user-id)}))
+  [{:keys [config]} user-id]
+  {:pre [(and (s/valid? ::AWSConfig config)
+              (s/valid? ::core/user-id user-id))]}
 
 (s/fdef delete-crypt-key
   :args ::core/delete-key-args
