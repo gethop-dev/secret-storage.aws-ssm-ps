@@ -3,12 +3,11 @@
 ;; file, You can obtain one at http://mozilla.org/MPL/2.0/
 
 (ns magnet.secrets-storage.aws-ssm-ps
-  (:require
-   [amazonica.aws.simplesystemsmanagement :as ssm]
-   [amazonica.core]
-   [clojure.spec.alpha :as s]
-   [magnet.secrets-storage.core :as core]
-   [integrant.core :as ig]))
+  (:require [amazonica.aws.simplesystemsmanagement :as ssm]
+            [amazonica.core :refer [ex->map]]
+            [clojure.spec.alpha :as s]
+            [integrant.core :as ig]
+            [magnet.secrets-storage.core :as core]))
 
 (s/def ::aws-kms-key string?)
 (s/def ::user-keys-path string?)
