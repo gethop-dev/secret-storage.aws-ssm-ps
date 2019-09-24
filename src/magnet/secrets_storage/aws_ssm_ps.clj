@@ -38,15 +38,15 @@
                        :with-decryption true})
                      (get-in [:parameter :value]))]
       (if crypt-key
-        {:success true
+        {:success? true
          :key (core/deserialize crypt-key)}
-        {:success false
+        {:success? false
          :error-details {:error-code "CryptKeyNotFound"}}))
     (catch com.amazonaws.AmazonServiceException e
-      {:success false
+      {:success? false
        :error-details (ex->map e)})
     (catch Exception e
-      {:success false
+      {:success? false
        :error-details (.getMessage e)})))
 
 (s/fdef get-crypt-key
@@ -67,14 +67,14 @@
                    :key-id (:aws-kms-key config)
                    :value (core/serialize crypt-key)})]
       (if result
-        {:success true}
-        {:success false
+        {:success? true}
+        {:success? false
          :error-details {:error-code "UnknownError"}}))
     (catch com.amazonaws.AmazonServiceException e
-      {:success false
+      {:success? false
        :error-details (ex->map e)})
     (catch Exception e
-      {:success false
+      {:success? false
        :error-details (.getMessage e)})))
 
 (s/fdef put-crypt-key
@@ -89,14 +89,14 @@
   (try
     (let [result (ssm/delete-parameter {:name (get-user-key-path config user-id)})]
       (if result
-        {:success true}
-        {:success false
+        {:success? true}
+        {:success? false
          :error-details {:error-code "UnknownError"}}))
     (catch com.amazonaws.AmazonServiceException e
-      {:success false
+      {:success? false
        :error-details (ex->map e)})
     (catch Exception e
-      {:success false
+      {:success? false
        :error-details (.getMessage e)})))
 
 (s/fdef delete-crypt-key

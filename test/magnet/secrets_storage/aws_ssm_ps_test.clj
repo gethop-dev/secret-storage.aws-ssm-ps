@@ -33,14 +33,14 @@
   (let [aws-ssm-ps-boundary (ig/init-key :magnet.secrets-storage/aws-ssm-ps config)]
     (let [result (core/get-key aws-ssm-ps-boundary enc-key-owner)]
       (is
-       (:success result)
+       (:success? result)
        "It should be possible to get an existing key")
       (is
        (encode-base64 (:key result))
        "It should be possible to encode key to base64 as it was mandatory format to even exist in AWS SSM PS"))
     (let [result (core/get-key aws-ssm-ps-boundary (str (UUID/randomUUID)))]
       (is
-       (and (= false (:success result))
+       (and (= false (:success? result))
             (= "ParameterNotFound" (get-in result [:error-details :error-code])))
        "Getting key of a user that doesn't exist should fail."))
     (let [new-user-id (str (UUID/randomUUID))
@@ -49,18 +49,18 @@
           secret-2 (byte-array (repeatedly secret-length #(rand-int 256)))]
       (is
        (= (core/put-key aws-ssm-ps-boundary new-user-id secret-1)
-          {:success true})
+          {:success? true})
        "It should be possible to create a new user with new key.")
       (is
        (= (core/put-key aws-ssm-ps-boundary new-user-id secret-2)
-          {:success true})
+          {:success? true})
        "It should be possible to update (overwrite) a key.")
       (is
        (= (core/delete-key aws-ssm-ps-boundary new-user-id)
-          {:success true})
+          {:success? true})
        "It should be possible to delete a key.")
       (let [result (core/get-key aws-ssm-ps-boundary new-user-id)]
         (is
-         (and (= false (:success result))
+         (and (= false (:success? result))
               (= "ParameterNotFound" (get-in result [:error-details :error-code])))
          "After a key gets deleted it should be impossible to get anything from that user.")))))
