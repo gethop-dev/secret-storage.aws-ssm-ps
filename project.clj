@@ -1,4 +1,4 @@
-(defproject magnet/secret-storage.aws-ssm-ps "0.4.0"
+(defproject magnet/secret-storage.aws-ssm-ps "0.5.0-SNAPSHOT"
   :description "Store secret values in AWS Systems Manager Parameter Store"
   :url "https://github.com/magnetcoop/secret-storage.aws-ssm-ps"
   :license {:name "Mozilla Public Licence 2.0"
