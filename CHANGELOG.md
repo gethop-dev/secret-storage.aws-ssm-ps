@@ -29,9 +29,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [0.2.0] - 2019-01-28
 - Initial commit (previous versions were not publicly released)
 
-[UNRELEASED]:  https://github.com/magnetcoop/buddy-auth.jwt-oidc/compare/v0.5.0...HEAD
-[0.5.0]: https://github.com/magnetcoop/buddy-auth.jwt-oidc/releases/tag/v0.5.0
-[0.4.0]: https://github.com/magnetcoop/buddy-auth.jwt-oidc/releases/tag/v0.4.0
-[0.3.0]: https://github.com/magnetcoop/buddy-auth.jwt-oidc/releases/tag/v0.3.0
-[0.2.0]: https://github.com/magnetcoop/buddy-auth.jwt-oidc/releases/tag/v0.2.0
+[UNRELEASED]: https://github.com/magnetcoop/secret-storage.aws-ssm-ps/compare/0.5.0...HEAD
+[0.5.0]: https://github.com/magnetcoop/secret-storage.aws-ssm-ps/releases/tag/0.5.0
+[0.4.0]: https://github.com/magnetcoop/secret-storage.aws-ssm-ps/releases/tag/0.4.0
+[0.3.0]: https://github.com/magnetcoop/secret-storage.aws-ssm-ps/releases/tag/0.3.0
+[0.2.0]: https://github.com/magnetcoop/secret-storage.aws-ssm-ps/releases/tag/0.2.0
 
