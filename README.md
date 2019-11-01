@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.org/magnetcoop/secret-storage.aws-ssm-ps.svg?branch=master)](https://travis-ci.org/magnetcoop/secret-storage.aws-ssm-ps)
+[![Build Status](https://api.travis-ci.com/magnetcoop/secret-storage.aws-ssm-ps.svg?branch=master)](https://travis-ci.com/magnetcoop/secret-storage.aws-ssm-ps)
+[![Clojars Project](https://img.shields.io/clojars/v/magnet/secret-storage.aws-ssm-ps.svg)](https://clojars.org/magnet/secret-storage.aws-ssm-ps)
+
 # Duct Secret Storage
 
 A [Duct](https://github.com/duct-framework/duct) library that provides [Integrant](https://github.com/weavejester/integrant) keys for managing user's secret keys stored in AWS System Manager Parameter Store.
