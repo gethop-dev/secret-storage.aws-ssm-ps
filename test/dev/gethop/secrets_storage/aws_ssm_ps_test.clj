@@ -5,6 +5,7 @@
 (ns  dev.gethop.secrets-storage.aws-ssm-ps-test
   (:require [clojure.spec.test.alpha :as stest]
             [clojure.test :refer :all]
+            [dev.gethop.secrets-storage.aws-ssm-ps]
             [dev.gethop.secrets-storage.core :as core]
             [dev.gethop.secrets-storage.util :refer [encode-base64]]
             [integrant.core :as ig])

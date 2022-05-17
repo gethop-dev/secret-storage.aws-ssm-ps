@@ -30,5 +30,6 @@
                  :eastwood {:linters [:all]
                             :source-paths ["src"]
                             :test-paths ["test"]
-                            :exclude-linters [:reflection]
+                            :exclude-linters [:reflection
+                                              :unused-namespaces]
                             :debug [:progress :time]}}})
