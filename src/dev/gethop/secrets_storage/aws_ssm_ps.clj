@@ -2,12 +2,12 @@
 ;; License, v. 2.0. If a copy of the MPL was not distributed with this
 ;; file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-(ns magnet.secrets-storage.aws-ssm-ps
+(ns dev.gethop.secrets-storage.aws-ssm-ps
   (:require [amazonica.aws.simplesystemsmanagement :as ssm]
             [amazonica.core :refer [ex->map]]
             [clojure.spec.alpha :as s]
-            [integrant.core :as ig]
-            [magnet.secrets-storage.core :as core]))
+            [dev.gethop.secrets-storage.core :as core]
+            [integrant.core :as ig]))
 
 (s/def ::aws-kms-key string?)
 (s/def ::user-keys-path string?)
@@ -112,5 +112,5 @@
   (delete-key [this user-id]
     (delete-crypt-key this user-id)))
 
-(defmethod ig/init-key :magnet.secrets-storage/aws-ssm-ps [_ config]
+(defmethod ig/init-key :dev.gethop.secrets-storage/aws-ssm-ps [_ config]
   (->AWSParameterStore config))

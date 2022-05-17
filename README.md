@@ -11,7 +11,7 @@ A [Duct](https://github.com/duct-framework/duct) library that provides [Integran
 
 ## Usage
 
-This library provides a single Integrant key, `:magnet.secrets-storage/aws-ssm-ps`, that expects the following keys:
+This library provides a single Integrant key, `:dev.gethop.secrets-storage/aws-ssm-ps`, that expects the following keys:
 
 * `:aws-kms-key`: Parameter Store uses AWS KMS to encrypt and decrypt the stored parameters. Here you specify which KMS key should be used for that purpose. You can give the entire key or use the alias in this format: `alias/youralias`.
 * `:user-keys-path`: The path to where the keys should be saved. The path string should contain the wildcard `%s` that will be replaced with the proper `user-id` in each case.
@@ -19,21 +19,21 @@ This library provides a single Integrant key, `:magnet.secrets-storage/aws-ssm-p
 Example usage:
 
 ``` edn
-  :magnet.secrets-storage/aws-ssm-ps
+  :dev.gethop.secrets-storage/aws-ssm-ps
   {:aws-kms-key "alias/hydrogen"
    :user-keys-path "/hydrogen/user-keys/%s"}
 ```
 Key initialization returns an `AWSParameterStore` record that can be used to perform the operations described below:
 
 ``` clojure
-user> (require '[magnet.secrets-storage.core :as secrets-storage]
-               '[magnet.secrets-storage.aws-ssm-ps]
+user> (require '[dev.gethop.secrets-storage.core :as secrets-storage]
+               '[dev.gethop.secrets-storage.aws-ssm-ps]
                '[integrant.core :as ig])
 nil
 user> (def config {:aws-kms-key (System/getenv "SSM_SP_AWS_KMS_KEY")
                    :user-keys-path (System/getenv "SSM_SP_USER_KEYS_PATH")})
 #'user/config
-user> (def aws-ssm-ps-boundary (ig/init-key :magnet.secrets-storage/aws-ssm-ps config))
+user> (def aws-ssm-ps-boundary (ig/init-key :dev.gethop.secrets-storage/aws-ssm-ps config))
 #'user/aws-ssm-ps-boundary
 ```
 

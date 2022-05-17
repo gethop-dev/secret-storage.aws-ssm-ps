@@ -2,35 +2,35 @@
 ;; License, v. 2.0. If a copy of the MPL was not distributed with this
 ;; file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-(ns  magnet.secrets-storage.aws-ssm-ps-test
+(ns  dev.gethop.secrets-storage.aws-ssm-ps-test
   (:require [clojure.spec.test.alpha :as stest]
             [clojure.test :refer :all]
-            [magnet.secrets-storage.core :as core]
-            [magnet.secrets-storage.util :refer [encode-base64]]
-            [magnet.secrets-storage.aws-ssm-ps]
+            [dev.gethop.secrets-storage.aws-ssm-ps]
+            [dev.gethop.secrets-storage.core :as core]
+            [dev.gethop.secrets-storage.util :refer [encode-base64]]
             [integrant.core :as ig])
-  (:import [magnet.secrets_storage.aws_ssm_ps AWSParameterStore]
+  (:import [dev.gethop.secrets_storage.aws_ssm_ps AWSParameterStore]
            [java.util UUID]))
 
 (defn enable-instrumentation [f]
-  (-> (stest/enumerate-namespace 'magnet.secrets-storage.aws-ssm-ps) stest/instrument)
+  (-> (stest/enumerate-namespace 'dev.gethop.secrets-storage.aws-ssm-ps) stest/instrument)
   (f))
 
 (use-fixtures :once enable-instrumentation)
 
-(def config {:aws-kms-key (System/getenv "SSM_SP_AWS_KMS_KEY")
-             :user-keys-path (System/getenv "SSM_SP_USER_KEYS_PATH")})
+(def config {:aws-kms-key "alias/Hydrogen"
+             :user-keys-path "/hydrogen/user-keys/unit-tests/%s"})
 
-(def enc-key-owner (System/getenv "SSM_SP_TESTS_ENC_KEY_OWNER"))
+(def enc-key-owner "0ef87379-b534-4004-b08f-36e429856c63")
 
 (deftest protocol-test
-  (let [aws-ssm-ps-boundary (ig/init-key :magnet.secrets-storage/aws-ssm-ps config)]
+  (let [aws-ssm-ps-boundary (ig/init-key :dev.gethop.secrets-storage/aws-ssm-ps config)]
     (is
      (= (class aws-ssm-ps-boundary)
         AWSParameterStore))))
 
 (deftest ^:integration aws-ssm-ps-test
-  (let [aws-ssm-ps-boundary (ig/init-key :magnet.secrets-storage/aws-ssm-ps config)]
+  (let [aws-ssm-ps-boundary (ig/init-key :dev.gethop.secrets-storage/aws-ssm-ps config)]
     (let [result (core/get-key aws-ssm-ps-boundary enc-key-owner)]
       (is
        (:success? result)

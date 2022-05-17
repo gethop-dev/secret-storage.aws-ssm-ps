@@ -2,10 +2,10 @@
 ;; License, v. 2.0. If a copy of the MPL was not distributed with this
 ;; file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-(ns magnet.secrets-storage.core
+(ns dev.gethop.secrets-storage.core
   (:require
    [clojure.spec.alpha :as s]
-   [magnet.secrets-storage.util :refer [encode-base64 decode-base64 base64?]]))
+   [dev.gethop.secrets-storage.util :refer [encode-base64 decode-base64 base64?]]))
 
 (s/def ::crypt-key bytes?)
 (s/def ::serialized-crypt-key base64?)

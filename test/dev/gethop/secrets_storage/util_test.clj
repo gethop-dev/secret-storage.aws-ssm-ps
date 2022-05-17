@@ -2,13 +2,13 @@
 ;; License, v. 2.0. If a copy of the MPL was not distributed with this
 ;; file, You can obtain one at http://mozilla.org/MPL/2.0/
 
-(ns magnet.secrets-storage.util-test
+(ns dev.gethop.secrets-storage.util-test
   (:require [clojure.spec.test.alpha :as stest]
             [clojure.test :refer :all]
-            [magnet.secrets-storage.util :as util]))
+            [dev.gethop.secrets-storage.util :as util]))
 
 (defn enable-instrumentation [f]
-  (-> (stest/enumerate-namespace 'magnet.secrets-storage.util) stest/instrument)
+  (-> (stest/enumerate-namespace 'dev.gethop.secrets-storage.util) stest/instrument)
   (f))
 
 (use-fixtures :once enable-instrumentation)
