@@ -5,11 +5,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### [0.5.0] 2019-09-24
+## [0.5.1] 2022-05-17
+### Added
+- Source code linting using [clj-kondo](https://github.com/clj-kondo/clj-kondo)
+
+### Changed
+- Moved the repository to [gethop-dev](https://github.com/gethop-dev) organization
+- CI/CD solution switch from [TravisCI](https://travis-ci.org/) to [GitHub Actions](Ihttps://github.com/features/actions)
+
+
+## [0.5.0] 2019-09-24
 ### Changed
 - INCOMPATIBLE CHANGE: renamed boolean keyword (in returned results) to comply with internal naming standards
 
-### [0.4.0] 2019-09-24
+## [0.4.0] 2019-09-24
 ### Added
 - This Changelog
 
@@ -29,9 +38,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 ## [0.2.0] - 2019-01-28
 - Initial commit (previous versions were not publicly released)
 
-[UNRELEASED]: https://github.com/magnetcoop/secret-storage.aws-ssm-ps/compare/0.5.0...HEAD
-[0.5.0]: https://github.com/magnetcoop/secret-storage.aws-ssm-ps/releases/tag/0.5.0
-[0.4.0]: https://github.com/magnetcoop/secret-storage.aws-ssm-ps/releases/tag/0.4.0
-[0.3.0]: https://github.com/magnetcoop/secret-storage.aws-ssm-ps/releases/tag/0.3.0
-[0.2.0]: https://github.com/magnetcoop/secret-storage.aws-ssm-ps/releases/tag/0.2.0
+[UNRELEASED]: https://github.com/gethop-dev/secret-storage.aws-ssm-ps/compare/0.5.1...HEAD
+[0.5.1]: https://github.com/gethop-dev/secret-storage.aws-ssm-ps/releases/tag/0.5.1
+[0.5.0]: https://github.com/gethop-dev/secret-storage.aws-ssm-ps/releases/tag/0.5.0
+[0.4.0]: https://github.com/gethop-dev/secret-storage.aws-ssm-ps/releases/tag/0.4.0
+[0.3.0]: https://github.com/gethop-dev/secret-storage.aws-ssm-ps/releases/tag/0.3.0
+[0.2.0]: https://github.com/gethop-dev/secret-storage.aws-ssm-ps/releases/tag/0.2.0
 

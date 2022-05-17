@@ -1,5 +1,6 @@
-[![Build Status](https://api.travis-ci.com/magnetcoop/secret-storage.aws-ssm-ps.svg?branch=master)](https://travis-ci.com/magnetcoop/secret-storage.aws-ssm-ps)
-[![Clojars Project](https://img.shields.io/clojars/v/magnet/secret-storage.aws-ssm-ps.svg)](https://clojars.org/magnet/secret-storage.aws-ssm-ps)
+[![ci-cd](https://github.com/gethop-dev/secret-storage.aws-ssm-ps/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/gethop-dev/secret-storage.aws-ssm-ps/actions/workflows/ci-cd.yml)
+[![Clojars Project](https://img.shields.io/clojars/v/dev.gethop/secret-storage.aws-ssm-ps.svg)](https://clojars.org/dev.gethop/secret-storage.aws-ssm-ps)
+
 
 # Duct Secret Storage
 
@@ -7,7 +8,7 @@ A [Duct](https://github.com/duct-framework/duct) library that provides [Integran
 
 ## Installation
 
-[![Clojars Project](https://clojars.org/magnet/secret-storage.aws-ssm-ps/latest-version.svg)](https://clojars.org/magnet/secret-storage.aws-ssm-ps)
+[![Clojars Project](https://clojars.org/dev.gethop/secret-storage.aws-ssm-ps/latest-version.svg)](https://clojars.org/dev.gethop/secret-storage.aws-ssm-ps)
 
 ## Usage
 
@@ -119,6 +120,6 @@ user> (secrets-storage/delete-key aws-ssm-ps-boundary "user-id-with-nonexistent-
 
 ## License
 
-Copyright (c) 2018, 2019 Magnet S Coop.
+Copyright (c) 2022 HOP Technologies
 
 The source code for the library is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
