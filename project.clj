@@ -1,4 +1,4 @@
-(defproject dev.gethop/secret-storage.aws-ssm-ps "0.5.1"
+(defproject dev.gethop/secret-storage.aws-ssm-ps "0.5.2-SNAPSHOT"
   :description "Store secret values in AWS Systems Manager Parameter Store"
   :url "https://github.com/gethop-dev/secret-storage.aws-ssm-ps"
   :license {:name "Mozilla Public Licence 2.0"
